@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000' # Map host port 3000 to container port 3000
+    environment:
+      MONGODB_URI: mongodb://db:27017/task-manager
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: your_secret_key # Replace with a secure key
+    depends_on:
+      - db
+
+  db:
+    image: mongo:latest # Use the latest MongoDB image
+    ports:
+      - '27017:27017' # Expose MongoDB port
+    volumes:
+      - mongo_data:/data/db # Persist data
+
+volumes:
+  mongo_data:
